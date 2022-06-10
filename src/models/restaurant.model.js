@@ -1,4 +1,5 @@
-import {Schema, model} from "mongoose";
+import mongoose from 'mongoose'
+const { Schema, model } = mongoose
 // const {ObjectId} = Schema.Types
 
 const RestaurantSchema = new Schema({
@@ -7,10 +8,17 @@ const RestaurantSchema = new Schema({
         trim: true,
         required: true
     },
-    id: {
+    address:{
         type: String,
-        ref: "User"
     },
 }, {timestamps: true})
+
+RestaurantSchema.statics.restaurantExists = function (name) {
+    return this.findOne({ name })
+}
+
+RestaurantSchema.statics.getAll = function () {
+    return this.find({})
+}
 
 export default model('Restaurant', RestaurantSchema)

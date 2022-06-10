@@ -2,15 +2,17 @@ export class ApiError extends Error {
     code;
     data;
     status = false
+
     constructor(message, errorCode) {
         super(message)
         this.name = this.constructor.name;
         this.code = errorCode
     }
+
     setData(data) {
         this.data = data
         return this
-      }
+    }
 }
 
 export class UserNotFoundError extends ApiError {
@@ -18,10 +20,11 @@ export class UserNotFoundError extends ApiError {
         super("User not found", "USER_NOT_FOUND")
     }
 }
+
 export class ActionNotAllowedError extends ApiError {
-  constructor() {
-    super("Action not allowed", "ACTION_NOT_ALLOWED")
-  }
+    constructor() {
+        super("Action not allowed", "ACTION_NOT_ALLOWED")
+    }
 }
 
 export class InvalidCredentialsError extends ApiError {
@@ -29,16 +32,18 @@ export class InvalidCredentialsError extends ApiError {
         super("Invalid creadentials", "INVALID_CREDENTIALS")
     }
 }
+
 export class InvalidFileTypeError extends ApiError {
     constructor() {
-      super("Invalid file type", "INVALID_FILE_TYPE")
+        super("Invalid file type", "INVALID_FILE_TYPE")
     }
-  }
+}
+
 export class TokenExpired extends ApiError {
     constructor() {
-      super("Token expired", "TOKEN_EXPIRED")
+        super("Token expired", "TOKEN_EXPIRED")
     }
-  }
+}
 
 export class UserExistsError extends ApiError {
     constructor(message) {
@@ -47,15 +52,15 @@ export class UserExistsError extends ApiError {
 }
 
 export class FollowExistsError extends ApiError {
-  constructor() {
-      super("Follow already exists", "DUPLICATE_FOUND")
-  }
+    constructor() {
+        super("Follow already exists", "DUPLICATE_FOUND")
+    }
 }
 
 export class TagExistsError extends ApiError {
-  constructor() {
-      super("Tag already exists", "DUPLICATE_FOUND")
-  }
+    constructor() {
+        super("Tag already exists", "DUPLICATE_FOUND")
+    }
 }
 
 export class NotFoundError extends ApiError {
@@ -78,24 +83,24 @@ export class InvalidFieldValueError extends ApiError {
 
 export class AccoutNotActivatedError extends ApiError {
     constructor() {
-      super("Accout not activated", "ACCOUNT_NOT_ACTIVATED");
+        super("Accout not activated", "ACCOUNT_NOT_ACTIVATED");
     }
-  }
+}
 
-  export class UserUnauthorizedError extends ApiError {
+export class UserUnauthorizedError extends ApiError {
     constructor() {
-      super("Not authorized to access this resource", "USER_UNAUTHORIZED");
+        super("Not authorized to access this resource", "USER_UNAUTHORIZED");
     }
-  }
+}
 
-  export class PageNotFound extends ApiError {
+export class PageNotFound extends ApiError {
     constructor() {
-      super("Page does not exit", "PAGE_NOT_FOUND");
+        super("Page does not exit", "PAGE_NOT_FOUND");
     }
-  }
+}
 
-  export class FileTooBig extends ApiError {
+export class FileTooBig extends ApiError {
     constructor() {
-      super("File too big", "FILE_TOO_BIG");
+        super("File too big", "FILE_TOO_BIG");
     }
-  }
+}

@@ -1,5 +1,5 @@
-import RestaurantModel from "./restaurant.model.js";
+import Restaurant from "./restaurant.model.js";
 
 export {
-    RestaurantModel
+    Restaurant,
 }

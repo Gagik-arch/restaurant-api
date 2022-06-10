@@ -13,8 +13,10 @@ const addAPIHandler = (method, url, fn, ...args) => {
         return apiRouter[method](url, asyncHandler(fn))
     }
 }
-addAPIHandler('get', '/restaurants/all', RestaurantController.getAll())
+
+addAPIHandler('get', '/restaurants/all', RestaurantController.getAll)
 
 apiRouter.use([cors(), json()])
+
 router.use('/api', apiRouter)
 
