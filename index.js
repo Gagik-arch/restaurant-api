@@ -13,5 +13,5 @@ app.use(cors(corsOptions))
 app.use(router)
 
 mongoose.connect(mongodb, () => {
-    app.listen(PORT || 5000, () => console.log('App listening on port: ' + PORT))
+    app.listen(5000, () => console.log('App listening on port: ' + 5000))
 })
