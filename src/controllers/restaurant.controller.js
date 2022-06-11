@@ -37,13 +37,6 @@ class RestaurantController {
             result
         })
     }
-
-    static async clear(req, res, next) {
-        const restaurants = await Restaurant.remove({}, function(err) {
-            console.log('collection removed')
-        });
-      return restaurants.save()
-    }
 }
 
 export default RestaurantController
