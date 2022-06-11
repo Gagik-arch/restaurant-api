@@ -5,11 +5,9 @@ import asyncHandler from "express-async-handler";
 import {RestaurantController} from "../controllers/index.js";
 
 const router = Router()
-const apiRouter = Router()
-
-router.use('/api', apiRouter)
 
 router.get("/api/restaurants/getAll", RestaurantController.getAll)
 router.post("/api/restaurants/add", RestaurantController.add)
+router.get("/api/restaurants/clear", RestaurantController.clear)
 
 export default router

@@ -8,9 +8,8 @@ class RestaurantController {
         const {name, address} = req.body
         let restaurant
         try {
-            restaurant = await Restaurant.restaurantExists(name)
+            restaurant = await Restaurant.restaurantExists(name,address)
             if (restaurant) {
-
                 return next(res.json({message: 'Resturant exist'}))
             }
             restaurant = new Restaurant(req.body)
@@ -25,13 +24,26 @@ class RestaurantController {
 
     static async getAll(req, res, next) {
         const restaurants = await Restaurant.getAll()
+        const result = restaurants.map(item=>({
+            "_id": item._id,
+            "name": item.name,
+            "address":item.address,
+            "rating": item.rating,
+            "reviews": item.reviews,
+            "telephone":item.telephone
+        }))
         return res.json({
             count: restaurants.length,
-            restaurants
+            result
         })
     }
 
-
+    static async clear(req, res, next) {
+        const restaurants = await Restaurant.remove({}, function(err) {
+            console.log('collection removed')
+        });
+      return restaurants.save()
+    }
 }
 
 export default RestaurantController
