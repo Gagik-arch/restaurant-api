@@ -25,21 +25,28 @@ class RestaurantController {
         const restaurants = await Restaurant.getAll()
 
         const result = restaurants.map(item => {
-           let rating = 0
-            item.reviews.forEach(item=>rating += item.rating)
+            let rating = 0
+            item.reviews.forEach(item => rating += item.rating)
             return {
                 _id: item._id,
                 name: item.name,
-                address: item.address,
-                telephone: item.telephone,
-                reviews: item.reviews.length,
-                rating :Math.floor(rating / item.reviews.length),
+                // address: item.address,
+                // telephone: item.telephone,
+                // reviews: item.reviews.length,
+                rating: Math.floor(rating / item.reviews.length),
             }
         })
-        return res.json({
-            count: restaurants.length,
-            result
-        })
+        return res.json(result)
+    }
+
+    static async getRestaurant(req, res, next) {
+        const {id} = req.body
+        const restaurant = await Restaurant.getOne(id)
+        if (restaurant) {
+            return res.json(restaurant)
+        }
+        return res.json({message: 'Resturant not exist'})
+
     }
 }
 

@@ -50,9 +50,11 @@ const RestaurantSchema = new Schema({
 RestaurantSchema.statics.restaurantExists = function (name, address) {
     return this.findOne({$or: [{name}, {address}]})
 }
-
 RestaurantSchema.statics.getAll = function () {
     return this.find({})
+}
+RestaurantSchema.statics.getOne = function (id) {
+    return this.findById(id).then(res => res)
 }
 
 export default model('Restaurant', RestaurantSchema)
