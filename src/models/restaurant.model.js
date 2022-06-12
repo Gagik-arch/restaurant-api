@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import {getAverageRating} from '../utils.js'
 
 const {Schema, model} = mongoose
 const {ObjectId} = Schema.Types
@@ -8,6 +9,10 @@ const RestaurantSchema = new Schema({
         type: String,
         trim: true,
         required: true
+    },
+    image: {
+        type: String,
+        trim: true,
     },
     address: {
         type: String,
@@ -54,7 +59,20 @@ RestaurantSchema.statics.getAll = function () {
     return this.find({})
 }
 RestaurantSchema.statics.getOne = function (id) {
-    return this.findById(id).then(res => res)
+    return this.findById(id).then(res => {
+        const data = JSON.parse(JSON.stringify(res))
+        data.rating = getAverageRating(data.reviews)
+        return data
+    })
+}
+
+RestaurantSchema.statics.updateRating = function (id, args) {
+    return this.findById(id).then(res => {
+        res.reviews.push(args)
+        res.rating = getAverageRating(res.reviews)
+        res.save();
+        return res
+    })
 }
 
 export default model('Restaurant', RestaurantSchema)

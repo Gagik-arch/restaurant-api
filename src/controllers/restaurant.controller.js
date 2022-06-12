@@ -1,6 +1,7 @@
 import {ActionNotAllowedError, NotFoundError, UserNotFoundError,} from '../errors.js'
 import {ApiResponse} from '../response/index.js'
 import {Restaurant} from "../models/index.js";
+import {getAverageRating} from '../utils.js'
 
 class RestaurantController {
     static async add(req, res, next) {
@@ -25,15 +26,11 @@ class RestaurantController {
         const restaurants = await Restaurant.getAll()
 
         const result = restaurants.map(item => {
-            let rating = 0
-            item.reviews.forEach(item => rating += item.rating)
+            let rating = getAverageRating(item.reviews)
             return {
                 _id: item._id,
                 name: item.name,
-                // address: item.address,
-                // telephone: item.telephone,
-                // reviews: item.reviews.length,
-                rating: Math.floor(rating / item.reviews.length),
+                rating: rating
             }
         })
         return res.json(result)
@@ -42,11 +39,18 @@ class RestaurantController {
     static async getRestaurant(req, res, next) {
         const {id} = req.body
         const restaurant = await Restaurant.getOne(id)
+
         if (restaurant) {
             return res.json(restaurant)
         }
         return res.json({message: 'Resturant not exist'})
+    }
 
+    static async sendFeedback(req, res, next) {
+        const {id, ...args} = req.body
+        const updatedResturant = await Restaurant.updateRating(id, args)
+        const restaurant = await Restaurant.getOne(id)
+        return res.json(restaurant)
     }
 }
 
