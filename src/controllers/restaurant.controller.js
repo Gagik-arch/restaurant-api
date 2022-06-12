@@ -49,8 +49,7 @@ class RestaurantController {
     static async sendFeedback(req, res, next) {
         const {id, ...args} = req.body
         const updatedResturant = await Restaurant.updateRating(id, args)
-        const restaurant = await Restaurant.getOne(id)
-        return res.json(restaurant)
+        return res.json(updatedResturant)
     }
 }
 

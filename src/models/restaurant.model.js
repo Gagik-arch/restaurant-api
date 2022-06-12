@@ -22,6 +22,9 @@ const RestaurantSchema = new Schema({
         type: String,
         default: 0,
     },
+    rating: {
+        type: Number
+    },
     website: {
         type: String,
         required: true
@@ -60,9 +63,8 @@ RestaurantSchema.statics.getAll = function () {
 }
 RestaurantSchema.statics.getOne = function (id) {
     return this.findById(id).then(res => {
-        const data = JSON.parse(JSON.stringify(res))
-        data.rating = getAverageRating(data.reviews)
-        return data
+        res.rating = getAverageRating(res.reviews)
+        return res
     })
 }
 
