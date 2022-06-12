@@ -1,14 +1,13 @@
 import {ActionNotAllowedError, NotFoundError, UserNotFoundError,} from '../errors.js'
 import {ApiResponse} from '../response/index.js'
 import {Restaurant} from "../models/index.js";
-import restaurantModel from "../models/restaurant.model.js";
 
 class RestaurantController {
     static async add(req, res, next) {
         const {name, address} = req.body
         let restaurant
         try {
-            restaurant = await Restaurant.restaurantExists(name,address)
+            restaurant = await Restaurant.restaurantExists(name, address)
             if (restaurant) {
                 return next(res.json({message: 'Resturant exist'}))
             }
@@ -24,14 +23,19 @@ class RestaurantController {
 
     static async getAll(req, res, next) {
         const restaurants = await Restaurant.getAll()
-        const result = restaurants.map(item=>({
-            "_id": item._id,
-            "name": item.name,
-            "address":item.address,
-            "rating": item.rating,
-            "reviews": item.reviews,
-            "telephone":item.telephone
-        }))
+
+        const result = restaurants.map(item => {
+           let rating = 0
+            item.reviews.forEach(item=>rating += item.rating)
+            return {
+                _id: item._id,
+                name: item.name,
+                address: item.address,
+                telephone: item.telephone,
+                reviews: item.reviews.length,
+                rating :Math.floor(rating / item.reviews.length),
+            }
+        })
         return res.json({
             count: restaurants.length,
             result
