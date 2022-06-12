@@ -9,6 +9,9 @@ router.get("/api/restaurants/getAll", RestaurantController.getAll)
 router.post("/api/restaurants/add", RestaurantController.add)
 router.post("/api/restaurants/getOne", RestaurantController.getRestaurant)
 router.post("/api/restaurants/feedback", RestaurantController.sendFeedback)
+router.post("/api", (res)=>{
+    res.send('App is running')
+})
 router.get('*', (_, res) => res.status(404).json({error: 'Page not found'}))
 
 export default router
