@@ -2,13 +2,13 @@ import {ActionNotAllowedError, NotFoundError, UserNotFoundError,} from '../error
 import {ApiResponse} from '../response/index.js'
 import {Restaurant} from "../models/index.js";
 import {getAverageRating} from '../utils.js'
+import mongoose from 'mongoose'
 
 class RestaurantController {
     static async add(req, res, next) {
         const {name, address} = req.body
-        let restaurant
         try {
-            restaurant = await Restaurant.restaurantExists(name, address)
+            const restaurant = await Restaurant.restaurantExists(name, address)
             if (restaurant) {
                 return next(res.json({message: 'Resturant exist'}))
             }
@@ -17,9 +17,7 @@ class RestaurantController {
             return res.json(restaurant)
         } catch (error) {
             res.json({message: 'Error restaurant '})
-            console.log('Error restaurant ')
         }
-        return res.send('{name:asd}')
     }
 
     static async getAll(req, res, next) {
@@ -37,19 +35,31 @@ class RestaurantController {
     }
 
     static async getRestaurant(req, res, next) {
-        const {id} = req.body
-        const restaurant = await Restaurant.getOne(id)
-
-        if (restaurant) {
-            return res.json(restaurant)
+        let {id} = req.body
+        id = id.split('/').shift()
+        try {
+            if (mongoose.Types.ObjectId.isValid(id)) {
+                const restaurant = await Restaurant.getOne(id)
+                if (restaurant) {
+                    return res.json(restaurant)
+                }
+                throw new Error()
+            }
+            throw new Error()
+        } catch (e) {
+            res.status(404).json({message: 'Error not found '})
         }
-        return res.json({message: 'Resturant not exist'})
     }
 
     static async sendFeedback(req, res, next) {
         const {id, ...args} = req.body
-        const updatedResturant = await Restaurant.updateRating(id, args)
-        return res.json(updatedResturant)
+        try {
+            const updatedResturant = await Restaurant.updateRating(id, args)
+            return res.json(updatedResturant)
+        } catch (e) {
+            res.status(404).send(e);
+        }
+
     }
 }
 

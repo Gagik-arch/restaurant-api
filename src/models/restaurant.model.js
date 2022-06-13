@@ -62,10 +62,11 @@ RestaurantSchema.statics.getAll = function () {
     return this.find({})
 }
 RestaurantSchema.statics.getOne = function (id) {
-    return this.findById(id).then(res => {
-        res.rating = getAverageRating(res.reviews)
-        return res
-    })
+    return this.findById(id).then((restaurant, err) => {
+            restaurant.rating = getAverageRating(restaurant.reviews)
+            return restaurant
+        }
+    )
 }
 
 RestaurantSchema.statics.updateRating = function (id, args) {
