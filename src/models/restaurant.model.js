@@ -23,7 +23,9 @@ const RestaurantSchema = new Schema({
         default: 0,
     },
     rating: {
-        type: Number
+        type: Number,
+        required: false,
+        default: 0
     },
     website: {
         type: String,
@@ -41,15 +43,15 @@ const RestaurantSchema = new Schema({
         {
             rating: {
                 type: Number,
-                required: true
+                required: false
             },
             feedback: {
                 type: String,
-                required: true
+                required: false
             },
             userId: {
                 type: String,
-                required: true
+                required: false
             },
         }
     ],

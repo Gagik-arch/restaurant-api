@@ -1,5 +1,6 @@
 export const getAverageRating = (reviews) => {
     let rating = 0
-    reviews.forEach(item => rating += item.rating)
-    return Math.round(rating / reviews.length);
+    reviews.length && reviews.forEach(item => rating += item.rating)
+
+    return rating > 0 ? Math.round(rating / reviews.length) : 0;
 }
